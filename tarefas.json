@@ -1,0 +1,30 @@
+[
+  {
+    "nome": "Fazer Resumo sobre Revolução Francesa",
+    "disciplina": "História",
+    "prioridade": "Média",
+    "data_entrega": "2025-07-17",
+    "desc": "Escrever um resumo de no mínimo 20 linhas explicando as causas, principais eventos e consequências da Revolução Francesa."
+  },
+  {
+    "nome": "Montar um Experimento sobre Mudanças de Estado Físico",
+    "disciplina": "Ciências",
+    "prioridade": "Alta",
+    "data_entrega": "2025-07-14",
+    "desc": "Preparar uma apresentação com um experimento simples demonstrando fusão e evaporação, explicando os conceitos envolvidos."
+  },
+  {
+    "nome": "Praticar Vocabulário com Flashcards",
+    "disciplina": "Inglês",
+    "prioridade": "Baixa",
+    "data_entrega": "2025-07-20",
+    "desc": "Criar 15 flashcards com palavras novas do capítulo 4 e estudá-las para o quiz da próxima semana."
+  },
+  {
+    "nome": "Elaborar Mapa com Principais Biomas do Brasil",
+    "disciplina": "Geografia",
+    "prioridade": "Média",
+    "desc": "Desenhar ou imprimir um mapa do Brasil e identificar os principais biomas (Amazônia, Cerrado, Mata Atlântica, etc.), incluindo uma legenda com características de cada um.",
+    "data_entrega": "2025-07-18"
+  }
+]
