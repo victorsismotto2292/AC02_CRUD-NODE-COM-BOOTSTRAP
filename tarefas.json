@@ -26,5 +26,12 @@
     "prioridade": "Média",
     "desc": "Desenhar ou imprimir um mapa do Brasil e identificar os principais biomas (Amazônia, Cerrado, Mata Atlântica, etc.), incluindo uma legenda com características de cada um.",
     "data_entrega": "2025-07-18"
+  },
+  {
+    "nome": "Resolver Lista de Equações do 2º Grau",
+    "disciplina": "Ciências",
+    "prioridade": "Alta",
+    "desc": "Completar todos os exercícios da lista sobre equações quadráticas, incluindo resolução com fórmula de Bhaskara e verificação das raízes.",
+    "data_entrega": "2025-07-22"
   }
 ]
