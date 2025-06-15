@@ -52,6 +52,13 @@ function BuscarTarefasPrioridade(prioridade){
     return tarefas.filter(tarefa => String(tarefa.prioridade) === String(prioridade)); // PARA TAREFAS QUE TÊM A MESMA PRIORIDADE
 }
 
+function BuscarTarefasDataEntrega(data_entrega){
+    const tarefasData = fs.readFileSync(tarefasPath, 'utf-8');
+    const tarefas = JSON.parse(tarefasData);
+
+    return tarefas.filter(tarefa => String(tarefa.data_entrega) === String(data_entrega)); // PARA TAREFAS QUE TÊM A MESMA DATA DE ENTREGA
+}
+
 // FUNÇÃO TRUNCAR DESCRIÇÃO
 
 function truncarDescricao(descricao, comprimentoMax){
@@ -80,7 +87,7 @@ app.get('/', (req, res) => {
             <td><p class="text-uppercase fw-bold">${tarefa.prioridade}</p></td>
             <td><p class="font-monospace fw-medium text-decoration-underline fst-italic">${tarefa.data_entrega}</p></td>
             <td><div class="text-nowrap bg-body-secondary border">${descricaoTruncada}</div></td>
-            <td><a href="http://localhost:3001/tarefas/atualizar-tarefa" class="btn btn-primary">Editar</a></td>
+            <td><a href="http://localhost:3001/tarefas/atualizar-tarefa?nome=${tarefa.nome}" class="btn btn-primary">Editar</a></td>
             <td><a href="http://localhost:3001/tarefas/excluir-tarefa?nome=${tarefa.nome}" class="btn btn-danger">Excluir</a></td>
         </tr>
         `; // TABELA PARA A ESTILIZAÇÃO DO BOOTSTRAP
@@ -106,7 +113,7 @@ app.post('/tarefas/adicionar-tarefa', (req, res) => {
     const tarefasData = fs.readFileSync(tarefasPath, 'utf-8');
     const tarefas = JSON.parse(tarefasData);
 
-    if(tarefas.find(tarefa => tarefa.nome.toLowerCase() === novaTarefa.nome.toLowerCase())){
+    if(novaTarefa.nome && tarefas.find(tarefa => tarefa.nome && tarefa.nome.toLowerCase() === novaTarefa.nome.toLowerCase())){
         res.send(`
 
             <!DOCTYPE html>
@@ -172,7 +179,73 @@ app.post('/tarefas/adicionar-tarefa', (req, res) => {
 // GET ATUALIZAR TAREFA:
 
 app.get('/tarefas/atualizar-tarefa', (req, res) => {
-    res.sendFile(path.join(__dirname, 'atualizartarefa.html'));
+    const nomeTarefa = req.query.nome || ''; // USO DO || '' PARA PEGAR O NOME SELECIONADO COM O BOTÃO
+
+    res.send(`
+
+        <!DOCTYPE html>
+        <html lang="pt-br">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Atualizar Tarefa</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+        </head>
+
+        <body>
+            <main>
+                <header>
+                    <div class="container-fluid" style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap:20px; 
+                    margin-bottom: 50px;  background-color:rgba(168, 198, 212, 0.671); max-width: 800px; box-shadow: 1px 1px rgba(0, 0, 0, 0.350); box-sizing: content-box;">
+                        <a class="btn btn-primary mt-5" href="http://localhost:3001/" role="button">Voltar</a><br>
+                        <p class="fs-2 fw-bold pb-3">Preencha o Formulário para Atualizar a Tarefa</p>
+                        <form action="http://localhost:3001/tarefas/atualizar-tarefa" method="post">
+                            <div class="mb-3" style="max-width: 300px; text-align: center;">
+                                <label for="nome_escolhido" class="form-label"><p class="fw-semibold">Nome da Tarefa Escolhida</p></label>
+                                <input type="text" class="form-control" id="nome_escolhido" name="nome_escolhido" value="${nomeTarefa}" disabled>
+                                <input type="hidden" name="nome" value="${nomeTarefa}">
+                            </div>
+                            <div class="mb-3" style="max-width: 300px; text-align: center;">
+                                <label for="disciplina" class="form-label"><p class="fw-semibold">Nome da Disciplina</p></label>
+                                <input type="text" class="form-control" id="disciplina" name="disciplina" placeholder="Exemplo: Disciplina 1" required>
+                            </div>
+                            <div class="mb-3" style="max-width: 300px; text-align: center;">
+                                <label for="disciplina" class="form-label"><p class="fw-semibold">Prioridade da Tarefa</p></label>
+                                <div class="col">
+                                    <div class="form-floating">
+                                        <select class="form-select mb-3" id="prioridade" name="prioridade" required>
+                                            <option value="" selected disabled>Selecione uma das opções</option>
+                                            <option value="Baixa">Baixa</option>
+                                            <option value="Média">Média</option>
+                                            <option value="Alta">Alta</option>
+                                        </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label"><p class="fw-semibold">Descrição</p></label>
+                                <textarea class="form-control fst-italic" id="desc" name="desc" rows="3" placeholder="Uma breve descrição..." required></textarea>
+                            </div>
+                            <div class="mb-3" style="max-width: 300px; text-align: center;">
+                                <label for="data_entrega" class="form-label"><p class="fw-semibold">Data de Entrega</p>
+                                <input type="date" class="form-control" min="2025-07-01"  id="data_entrega" name="data_entrega" required>
+                            </div>
+                            <div class="mb-5" style="max-width: 300px;  text-align: center;">
+                                <button type="submit" class="btn btn-info mt-3 fw-bold">Atualizar Tarefa</button>
+                            </div>
+                    </form> 
+                    </div>
+                </header>
+            </main>
+
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+                </script>
+        </body>
+
+        </html>
+        
+        `);
 });
 
 // POST ATUALIZAR TAREFA:
@@ -185,7 +258,7 @@ app.post('/tarefas/atualizar-tarefa', (req, res) => {
 
     const tarefasIndex = tarefas.findIndex(tarefa => tarefa.nome.toLowerCase() === nome.toLowerCase());
 
-    if(tarefasIndex == -1){
+    if(tarefasIndex == -1){ // CASO DÊ ERRO DO BOTÃO NÃO CONSEGUIR ASSOCIAR O NOME DA TAREFA SELECIONADA
         res.send(`
 
             <!DOCTYPE html>
@@ -570,6 +643,84 @@ app.post('/tarefas/buscar-tarefa-prioridade-resultado', (req, res) => {
                 <div class="alert alert-danger text-center shadow" role="alert">
                 <h4 class="alert-heading">Erro!</h4>
                 <p class="fw-semibold">Prioridade solicitada não encontrada, por favor, tente novamente.</p>
+                <hr>
+                <a href="http://localhost:3001/" class="btn btn-outline-danger">Voltar</a>
+                </div>
+            </div>
+            </body>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+            </script>
+            </html>
+
+        `); // PÁGINA HTML PARA A ESTILIZAÇÃO DO BOOTSTRAP
+        return;
+    }
+});
+
+// GET BUSCAR TAREFA DATA DE ENTREGA (NÃO PRECISA DO POST)
+
+app.get('/tarefas/buscar-tarefa-data', (req, res) => {
+    res.sendFile(path.join(__dirname, 'buscartarefadata.html'));
+});
+
+// GET BUSCAR TAREFA DATA DE ENTREGA RESULTADO
+
+app.get('/tarefas/buscar-tarefa-data-resultado', (req, res) => {
+    res.sendFile(path.join(__dirname, 'buscartarefadataresultado.html'));
+});
+
+// POST BUSCAR TAREFA DATA DE ENTREGA RESULTADO
+
+app.post('/tarefas/buscar-tarefa-data-resultado', (req, res) => {
+    const tarefaBuscada = req.body.data_entrega;
+    const tarefaEncontrada = BuscarTarefasDataEntrega(tarefaBuscada);
+
+    if(tarefaEncontrada.length > 0){
+        let TarefaCardResultado = '';
+
+        tarefaEncontrada.forEach(tarefa => {
+            const descricaoTruncada = truncarDescricao(tarefa.desc, 100);
+
+            TarefaCardResultado += `
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">${tarefa.nome}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Disciplina:</strong> <span class="fst-italic">${tarefa.disciplina}</span></p>
+                        <p class="card-text"><strong>Prioridade:</strong> <span class="text-uppercase fw-bold">${tarefa.prioridade}</span></p>
+                        <p class="card-text"><strong>Data de Entrega:</strong> <span class="font-monospace fw-medium text-decoration-underline fst-italic">
+                        ${tarefa.data_entrega}</span></p>
+                        <p class="card-text"><strong>Descrição:</strong> <div class="bg-body-secondary border p-2 rounded">${descricaoTruncada}</div></p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="http://localhost:3001/" class="btn btn-primary">Voltar</a>
+                    </div>
+                </div>
+            `;
+        });
+        let htmlContent = fs.readFileSync('buscartarefaprioridaderesultado.html', 'utf-8');
+        let htmlFinal = htmlContent.replace('{{TarefaCardResultado}}', TarefaCardResultado);
+
+        res.send(htmlFinal);
+    }
+    else{
+        res.send(`
+
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Erro - Buscar Tarefa Data</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+            </head>
+            <body class="bg-light">
+            <div class="container mt-5">
+                <div class="alert alert-danger text-center shadow" role="alert">
+                <h4 class="alert-heading">Erro!</h4>
+                <p class="fw-semibold">Data de Entrega solicitada, por favor, tente novamente.</p>
                 <hr>
                 <a href="http://localhost:3001/" class="btn btn-outline-danger">Voltar</a>
                 </div>
