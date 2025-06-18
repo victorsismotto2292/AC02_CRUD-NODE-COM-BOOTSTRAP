@@ -12,9 +12,9 @@
 
 <body>
     <main>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark"
-        style="display: flex; justify-content: space-around;">
-        <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark"
+        style="display: flex; justify-content: space-around; align-items: center;">
+        <div class="container-xxl">
             <a class="navbar-brand" href="#"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -40,7 +40,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <p class="fw-medium mt-2" style="color: white; text-align: center; margin-left: 375px;">AGENDA
+                        <p class="fw-medium mt-2 text-center" style="color: white; margin-left: 375px;">AGENDA
                             DE TAREFAS</p>
                     </li>
                 </ul>
@@ -53,21 +53,24 @@
         </div>
     </nav>
     <header>
-        <table class="table">            
-            <thead>
-                <tr class="table-primary py-2">
-                    <th scope="col"><p class="text-center mt-2">Nome</p></th>
-                    <th scope="col"><p class="mt-2">Disciplina</p></th>
-                    <th scope="col"><p class="mt-2">Prioridade</p></th>
-                    <th scope=col><p class="mt-2">Data de Entrega</p></th>
-                    <th scope="col"><p class="text-center mt-2">Descrição</p></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {{tarefasTable}}
-            </tbody>
+        <div class="table-responsive-xl">
+            <table class="table">            
+                <thead>
+                    <tr class="table-primary py-2">
+                        <th scope="col"><p class="text-center mt-2">Nome</p></th>
+                        <th scope="col"><p class="mt-2">Disciplina</p></th>
+                        <th scope="col"><p class="mt-2">Prioridade</p></th>
+                        <th scope=col><p class="text-center mt-2">Data</p></th>
+                        <th scope="col"><p class="text-center mt-2">Descrição</p></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{tarefasTable}}
+                </tbody>
+            </table> 
+        </div>   
     </header>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
