@@ -78,7 +78,7 @@ app.get('/', (req, res) => {
 
     tarefas.forEach(tarefa => {
 
-        const descricaoTruncada = truncarDescricao(tarefa.desc, 100);
+        const descricaoTruncada = truncarDescricao(tarefa.desc, 50);
         
         tarefasTable += `
         <tr>
