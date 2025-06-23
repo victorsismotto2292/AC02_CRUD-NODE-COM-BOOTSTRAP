@@ -446,7 +446,7 @@ app.get('/tarefas/buscar-tarefa-nome', (req, res) => {
 
     if (tarefaEncontrada) {
         let TarefaCardResultado = '';
-        const descricaoTruncada = truncarDescricao(tarefaEncontrada.desc, 100);
+        const descricaoTruncada = truncarDescricao(tarefaEncontrada.desc); // APARECER DESCRIÇÃO COMPLETA SEM LIMITE DE CARACTERES
 
         TarefaCardResultado += `
             <div class="card shadow-sm mb-4">
@@ -524,7 +524,7 @@ app.post('/tarefas/buscar-tarefa-disciplina-resultado', (req, res) => {
         let TarefaCardResultado = '';
 
         tarefaEncontrada.forEach(tarefa => {
-            const descricaoTruncada = truncarDescricao(tarefa.desc, 100);
+            const descricaoTruncada = truncarDescricao(tarefa.desc); // SEM LIMITE DE CARACTERES, DESCRIÇÃO INTEIRA
 
             TarefaCardResultado += `
                 <div class="card shadow-sm mb-4">
@@ -602,7 +602,7 @@ app.post('/tarefas/buscar-tarefa-prioridade-resultado', (req, res) => {
         let TarefaCardResultado = '';
 
         tarefaEncontrada.forEach(tarefa => {
-            const descricaoTruncada = truncarDescricao(tarefa.desc, 100);
+            const descricaoTruncada = truncarDescricao(tarefa.desc); // SEM LIMITE DE CARACTERES, DESCRIÇÃO INTEIRA
 
             TarefaCardResultado += `
                 <div class="card shadow-sm mb-4">
@@ -680,7 +680,7 @@ app.post('/tarefas/buscar-tarefa-data-resultado', (req, res) => {
         let TarefaCardResultado = '';
 
         tarefaEncontrada.forEach(tarefa => {
-            const descricaoTruncada = truncarDescricao(tarefa.desc, 100);
+            const descricaoTruncada = truncarDescricao(tarefa.desc); // SEM LIMITE DE CARACTERES, DESCRIÇÃO INTEIRA
 
             TarefaCardResultado += `
                 <div class="card shadow-sm mb-4">
